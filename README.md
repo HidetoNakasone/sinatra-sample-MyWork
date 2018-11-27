@@ -11,4 +11,6 @@ CREATE TABLE tweets (id int(11) auto_increment, creater_id int(11), creater_name
 ※sqlへアクセスするユーザーとパスワードを、app.rbのclientクラスで指定してください。
 私の場合、rootユーザーのrootというパスワードにてアクセスしています。
 
-!参考画像_1 /README_imgs/01.png
+![参考画像_1] (https://raw.githubusercontent.com/HidetoNakasone/sinatra-sample-MyWork/master/README_imgs/01.png)
+
+![参考画像_2] (https://raw.githubusercontent.com/HidetoNakasone/sinatra-sample-MyWork/master/README_imgs/02.png)
