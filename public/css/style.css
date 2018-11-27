@@ -1,0 +1,356 @@
+
+* {
+  text-align: center;
+  transition: .3s;
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  word-wrap: break-word;
+}
+
+body {
+  animation: fadeIn 2.2s ease 0s 1 normal;
+
+  color: rgb(69, 69, 69);
+  width: 100%;
+  margin: 0;
+  background: linear-gradient(to right, #13adee, #0072ff);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    margin-top: 100px;
+  }
+  100% {
+    opacity: 1;
+    margin-top:  0;
+  }
+}
+
+#page_message {
+  background-color: rgba(79, 79, 79, 0.25);
+  color: white;
+  border-radius: 10px;
+  /* position: absolute; */
+  position: fixed;
+  top: 3%;
+  left: 2%;
+  opacity: 0;
+  font-size: 15px;
+
+  animation: anime_page_message .8s ease 1.2s 1 forwards;
+}
+
+@keyframes anime_page_message {
+  0% {
+    margin-left: -200px;
+  }
+  60% {
+    margin-left: 20px;
+    border-radius: 40px;
+    background-color: rgba(255, 237, 74, 0.7);
+    border-radius: 30px 0 30px 0;
+  }
+  100% {
+    opacity: 1;
+    margin-left: 0;
+  }
+}
+
+#title {
+  overflow: hidden;
+  opacity: 0;
+  animation: title_anime 1.6s ease .6s 1 forwards;
+  font-size: 50px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  margin-left: -50px;
+}
+
+@keyframes title_anime {
+  0% {
+  }
+  100% {
+    margin-left: 0px;
+    opacity: 1;
+  }
+}
+
+input {
+  width: 24%;
+  max-width: 300px;
+  height: 44px;
+  border: 0;
+  border-radius: 16px;
+  margin: 13px;
+  padding-top: 4px;
+  font-size: 23px;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+input[type="submit"] {
+  background: linear-gradient(to right, #ffb75e, #ed8f03);
+  font-weight: bolder;
+  margin-top: 0;
+}
+
+input::placeholder {
+  color: rgb(147, 146, 146);
+}
+
+input:hover::placeholder, input:focus::placeholder {
+  opacity: 0;
+}
+
+input[type="text"]:hover, input[type="text"]:focus,
+input[type="password"]:hover, input[type="password"]:focus {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 30px;
+}
+
+input[type="file"] {
+  font-size: 16px;
+  margin-top: 0;
+  background: none;
+  color: white;
+  height: 28px;
+  margin-bottom: 30px;
+  border-radius: 0;
+}
+
+input[type="file"]:hover {
+  cursor: pointer;
+}
+
+input[type="submit"]:hover, input[type="submit"]:focus {
+  cursor: pointer;
+  width: 20%;
+  max-width: 220px;
+  border-radius: 24px;
+  color: white;
+  font-size: 28px;
+}
+
+#form_order_by {
+  /* float: left;
+  margin-left: 20%;
+  padding-right: 30px; */
+  margin-top: 100px;
+  color: white;
+}
+
+#form_order_by label {
+  margin: 0 10px;
+  background-color: rgba(204, 205, 105, 0.6);
+  padding: 3px 20px;
+  border-radius: 20px;
+}
+
+#form_order_by label:hover {
+  cursor: pointer;
+  background-color: rgba(204, 205, 105, 0.9);
+}
+
+#link_style {
+  color: rgb(255, 255, 255);
+  font-size: 25px;
+  text-decoration: none;
+}
+
+#link_style:hover, #link_style:focus {
+  color: rgb(235, 255, 0);
+  font-weight: bolder;
+  letter-spacing: 2px;
+}
+
+#anime_1 {
+  background-color: rgba(79, 79, 79, 0.2);
+  border-radius: 10px;
+  width: 240px;
+  margin: auto;
+  margin-top: 60px;
+}
+
+#anime_1:hover {
+  animation: anime_1 1.3s ease 0s 100 normal;
+}
+
+@keyframes anime_1 {
+  0% {
+    width: 240px;
+  }
+  50% {
+    width: 270px;
+    border-radius: 30px;
+    border-left: 6px solid rgb(211, 255, 36);
+    border-right: 6px solid rgb(211, 255, 36);
+    background-color: rgba(79, 79, 79, 0.4);
+  }
+  100% {
+    width: 240px;
+  }
+}
+
+#views {
+  width: 88%;
+  max-width: 1150px;
+  margin: auto;
+  /* padding: 0 2%; */
+  /* padding-bottom: 3%; */
+  /* background-color: rgba(0, 0, 0, 0.2); */
+  /* border-radius: 20px; */
+}
+
+.view {
+  font-size: 24px;
+  padding: 13px 18px;
+
+  width: 60%;
+  border-radius: 20px;
+  margin-top: 100px;
+}
+
+.my_view {
+  background-color: rgba(200, 198, 71, 0.8);
+  margin-left: 30%;
+  color: rgb(69, 69, 69);
+}
+
+.other_view {
+  background-color: rgba(0, 0, 0, 0.7);
+  margin-left: 10%;
+  color :rgb(255, 255, 255);
+}
+
+.my_view::after {
+  content: "";
+  border-radius: 50%;
+  background-color: rgba(225, 225, 130, 0.8);
+	position: absolute;
+
+  width: 55px;
+  height: 55px;
+  margin-top: -26px;
+  margin-left: 380px;
+}
+
+.my_view_edge::after {
+  content: "";
+  border-radius: 50%;
+  background-color: rgba(250, 250, 190, 0.8);
+  position: absolute;
+
+  width: 36px;
+  height: 36px;
+  margin-top: -10px;
+  margin-left: 575px;
+}
+
+.other_view::after {
+  content: "";
+  border-radius: 50%;
+  background-color: rgba(45, 45, 45, 0.7);
+	position: absolute;
+
+  width: 55px;
+  height: 55px;
+  margin-top: -35px;
+  margin-left: -440px;
+}
+
+.other_view_edge::after {
+  content: "";
+  border-radius: 50%;
+  background-color: rgba(90, 90, 90, 0.7);
+  position: absolute;
+
+  width: 36px;
+  height: 36px;
+  margin-top: -16px;
+  margin-left: -580px;
+}
+
+.tweet_info {
+  font-size: 20px;
+  text-align: left;
+  padding-left: 4%;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed white;
+}
+
+.my_tweet_info {
+  border-bottom: 2px dashed rgb(69, 69, 69);;
+}
+
+.msg-content {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.tweet_img img {
+  width: 100%;
+  border-radius: 20px;
+  transform: scale(.97);
+
+  /* opacity: .5; */
+}
+
+.tweet_img img:hover {
+  transform: scale(0.98);
+  filter: blur(3px);
+}
+
+
+/* ====================== */
+/* ====================== */
+.tweet_img:hover:after {
+  content: "画像はDelete時に同時に削除されます。";
+  position: absolute;
+  margin-top: -220px;
+  color: black;
+  width: 16%;
+  margin-left: -8%;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  word-wrap: break-word;
+}
+/* ====================== */
+/* ====================== */
+
+
+.delete_form input[type="submit"] {
+  width: 20%;
+  height: 34px;
+  max-width: 220px;
+  margin: 6px;
+  color: rgb(30, 93, 124);
+  font-size: 22px;
+
+  background: linear-gradient(to right, #bdff5e, #04eda0);
+  font-weight: bolder;
+}
+
+.delete_form input[type="submit"]:hover, .delete_form input[type="submit"]:focus {
+  cursor: pointer;
+  width: 17%;
+  max-width: 180px;
+  border-radius: 24px;
+  color: rgb(50, 50, 50);
+  font-size: 24px;
+}
+
+#logo {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-bottom: -6px;
+  width: 140px;
+}
+
+#logo img {
+  width: 100%;
+}

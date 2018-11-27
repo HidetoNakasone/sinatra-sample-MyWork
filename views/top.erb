@@ -1,0 +1,73 @@
+
+<h1 id="title"><%= @user_name %> でログイン中</h1>
+
+<form action="/save" method="post" enctype="multipart/form-data">
+  <input type="text" name="msg" placeholder="Comment" required>
+  <br>
+  <input type="file" accept="image/*" name="upimg">
+  <br>
+  <input type="submit" value="Go">
+</form>
+
+<div id="anime_1">
+  <a id="link_style" href="/logout">ログアウトする</a>
+</div>
+
+<form id="form_order_by" action="/order_by" method="post">
+  ソート：
+  <label>
+    Old
+    <i class="fas fa-sort-down"></i>
+    <input type="radio" name="order" value="asc" onChange="this.form.submit()" hidden></input>
+  </label>
+  <label>
+    New
+    <i class="fas fa-sort-up"></i>
+    <input type="radio" name="order" value="desc" onChange="this.form.submit()" hidden></input>
+  </label>
+</form>
+
+<div id="views">
+  <p style="color: white;"><%= @res_info %></p>
+  <% @res.each do |tweet| %>
+    <% if tweet['is_creater'] %>
+
+      <div class="view my_view">
+        <p class="tweet_info my_tweet_info"><%= tweet['creater_name'] %>さん
+        &nbsp;<%= tweet['dateinfo-con'] %></p>
+        <p class="msg-content"><%= tweet['msg'] %></p>
+        <% if tweet['img_name'] != nil %>
+          <div class="tweet_img">
+            <img src="/upimgs/<%= tweet['img_name'] %>.jpg">
+          </div>
+        <% end %>
+        <form class="delete_form" action="/tweet_delete" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="tweet_id" value="<%= tweet['id'] %>">
+          <input type="hidden" name="img_name" value="<%= tweet['img_name'] %>">
+          <input type="submit" value="Delete">
+        </form>
+      </div>
+      <div class="my_view_edge"></div>
+
+    <% else %>
+
+      <div class="view other_view">
+        <p class="tweet_info"><%= tweet['creater_name'] %>さん
+          &nbsp;<%= tweet['dateinfo-con'] %></p>
+        <p class="msg-content"><%= tweet['msg'] %></p>
+        <% if tweet['img_name'] != nil %>
+          <div class="tweet_img">
+            <img src="/upimgs/<%= tweet['img_name'] %>.jpg">
+          </div>
+        <% end %>
+      </div>
+      <div class="other_view_edge"></div>
+
+    <% end %>
+  <% end %>
+</div>
+
+<br>
+<br>
+<br>
