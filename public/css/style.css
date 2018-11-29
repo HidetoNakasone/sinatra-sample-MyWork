@@ -135,22 +135,23 @@ input[type="submit"]:hover, input[type="submit"]:focus {
   font-size: 28px;
 }
 
-#form_order_by {
-  /* float: left;
-  margin-left: 20%;
-  padding-right: 30px; */
+.form_sql_option {
   margin-top: 100px;
   color: white;
 }
 
-#form_order_by label {
+.form_sql_option_2 {
+  margin-top: 30px;
+}
+
+.form_sql_option label {
   margin: 0 10px;
   background-color: rgba(204, 205, 105, 0.6);
   padding: 3px 20px;
   border-radius: 20px;
 }
 
-#form_order_by label:hover {
+.form_sql_option .option_order:hover {
   cursor: pointer;
   background-color: rgba(204, 205, 105, 0.9);
 }
@@ -275,15 +276,56 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 }
 
 .tweet_info {
-  font-size: 20px;
-  text-align: left;
+  width: 96%;
   padding-left: 4%;
   padding-bottom: 10px;
   border-bottom: 2px dashed white;
 }
 
+.tweet_info p {
+  font-size: 22px;
+  text-align: left;
+  float: left;
+}
+
 .my_tweet_info {
   border-bottom: 2px dashed rgb(69, 69, 69);;
+}
+
+.tweet_status {
+  width: 14%;
+  /* float: right; */
+  margin-left: 85%;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(69, 69, 69);
+}
+
+.tweet_status form {
+  padding-left: 25%;
+  float: left;
+}
+
+.tweet_liked {
+  color: rgb(235, 69, 119);
+}
+
+.tweet_liked:hover {
+  cursor: pointer;
+  color: rgb(69, 69, 69);
+}
+
+.tweet_nolike {
+  color: rgb(69, 69, 69);
+}
+
+.tweet_nolike:hover {
+  cursor: pointer;
+  color: rgb(235, 69, 119);
+}
+
+.tweet_status_like {
+  margin-left: -15%;
 }
 
 .msg-content {
@@ -301,7 +343,8 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 
 .tweet_img img:hover {
   transform: scale(0.98);
-  filter: blur(3px);
+  filter: blur(2px);
+  opacity: .8
 }
 
 
@@ -310,7 +353,7 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 .tweet_img:hover:after {
   content: "画像はDelete時に同時に削除されます。";
   position: absolute;
-  margin-top: -220px;
+  margin-top: -230px;
   color: black;
   width: 16%;
   margin-left: -8%;
@@ -329,6 +372,7 @@ input[type="submit"]:hover, input[type="submit"]:focus {
   margin: 6px;
   color: rgb(30, 93, 124);
   font-size: 22px;
+  letter-spacing: 1px;
 
   background: linear-gradient(to right, #bdff5e, #04eda0);
   font-weight: bolder;
@@ -340,7 +384,8 @@ input[type="submit"]:hover, input[type="submit"]:focus {
   max-width: 180px;
   border-radius: 24px;
   color: rgb(50, 50, 50);
-  font-size: 24px;
+  /* font-size: 24px; */
+  letter-spacing: 0px;
 }
 
 #logo {

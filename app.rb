@@ -19,7 +19,7 @@ client = Mysql2::Client.new(
 # ====================
 
 def is_login
-  if session[:user_id].nil?
+  if session[:loginuser_id].nil?
     redirect '/login'
   end
 end
@@ -55,17 +55,31 @@ get '/' do
   @page_message = session[:page_message]
   session[:page_message] = nil
 
-  @res = client.xquery("SELECT * FROM tweets ORDER BY id #{session[:user_order]} ;")
+  @res = client.xquery("SELECT * FROM tweets ORDER BY id #{session[:user_order]} #{session[:user_sort_option]};")
   if @res.size < 1
     @res_info = "No Data."
   else
     @res.each do |row|
       row['dateinfo-con'] = time_con(row['dateinfo'])
-      if row['creater_id'] == session[:user_id]
+
+      # その投稿者がログインユーザーかどうかを記憶
+      if row['creater_id'] == session[:loginuser_id]
         row['is_creater'] = true
       else
         row['is_creater'] = false
       end
+
+      # その投稿のいいね数を取得し記憶
+      row['likes_count'] = client.xquery("SELECT COUNT(*) FROM likes WHERE tweet_id = #{row['id']};").first['COUNT(*)']
+
+      # その投稿をログインユーザーがいいねしているか記憶
+      temp_is_like = client.xquery("SELECT COUNT(*) FROM likes WHERE user_id = #{session[:loginuser_id]} && tweet_id = #{row['id']};").first['COUNT(*)']
+      if temp_is_like == 1
+        row['loginuser_is_like'] = true
+      else
+        row['loginuser_is_like'] = false
+      end
+
     end
   end
 
@@ -95,10 +109,12 @@ post '/login' do
 
   page_message = nil
   if res
-    session[:user_id] = res['id']
+    session[:loginuser_id] = res['id']
     session[:user_name] = res['user_name']
     # 初期のorderは、asc設定。
     session[:user_order] = "ASC"
+    session[:user_sort_option] = ""
+
     page_message = "<p style='padding: 0 10px;'>Success.<br>適正ユーザーです<br>「データベースへアクセス開始...」</p>"
   else
     page_message = "<p style='padding: 0 10px; color: rgba(255, 253, 85, 1);'>Error.<br>不正アクセス<br>「システムとのリンクを構築できません」</p>"
@@ -110,9 +126,11 @@ end
 # ====================
 
 get '/logout' do
-  session[:user_id] = nil
+  session[:loginuser_id] = nil
   session[:user_name] = nil
   session[:user_order] = nil
+  session[:user_sort_option] = nil
+  session[:page_message] = nil
   redirect '/'
 end
 
@@ -158,7 +176,7 @@ post '/save' do
     end
   end
 
-  client.xquery("INSERT INTO tweets VALUES (NULL, ?, ?, ?, ?, ?);", session[:user_id].to_s, session[:user_name].to_s, DateTime.now, Rack::Utils.escape_html(params[:msg]), up_img_name)
+  client.xquery("INSERT INTO tweets VALUES (NULL, ?, ?, ?, ?, ?);", session[:loginuser_id].to_s, session[:user_name].to_s, DateTime.now, Rack::Utils.escape_html(params[:msg]), up_img_name)
   session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>追加完了<br>「データが正常に処理されました」</p>"
 
   redirect '/'
@@ -172,6 +190,7 @@ delete '/tweet_delete' do
     FileUtils.rm("./public/upimgs/" + params[:img_name] + ".jpg")
   end
   client.xquery("DELETE FROM tweets WHERE id = ?;", params[:tweet_id])
+  client.xquery("DELETE FROM likes WHERE tweet_id = ?;", params[:tweet_id])
   session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>削除完了<br>「正常に削除処理を実行しました」</p>"
 
   redirect '/'
@@ -179,15 +198,44 @@ end
 
 # ====================
 
-post '/order_by' do
-  if params['order'] == "asc"
+post '/sql_option' do
+
+  if params[:order] == "asc"
     session[:user_order] = "ASC"
-    temp = "古い順"
-  elsif params['order'] == "desc"
+    temp = "を古い順"
+  elsif params[:order] == "desc"
     session[:user_order] = "DESC"
-    temp = "新しい順"
+    temp = "を新しい順"
   end
-  session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>ソート変更<br>「表示をを#{temp}に設定しました。」</p>"
+
+  if params[:sort_size] != nil && params[:sort_size] != "default"
+    if params[:sort_size] == "all"
+      session[:user_sort_option] = ""
+      temp = "数を全て"
+    else
+      session[:user_sort_option] = "LIMIT #{params[:sort_size]}"
+      temp = "数を#{params[:sort_size]}"
+    end
+  end
+
+  session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>ソート変更<br>「表示#{temp}に設定しました。」</p>"
+
+  redirect '/'
+end
+
+# ====================
+
+post '/likes' do
+  client.xquery("INSERT INTO likes VALUES(NULL, ?, ?);", session[:loginuser_id], params[:tweet_id])
+  session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>いいね追加<br>「追加処理が正常に行われました」</p>"
+  redirect '/'
+end
+
+# ====================
+
+delete '/likes' do
+  client.xquery("DELETE FROM likes WHERE user_id = ? && tweet_id = ?;", session[:loginuser_id], params[:tweet_id])
+  session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>いいね取り消し<br>「取り消し処理が正常に行われました」</p>"
   redirect '/'
 end
 

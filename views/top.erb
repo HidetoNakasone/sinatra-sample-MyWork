@@ -13,17 +13,31 @@
   <a id="link_style" href="/logout">ログアウトする</a>
 </div>
 
-<form id="form_order_by" action="/order_by" method="post">
+<form class="form_sql_option" action="/sql_option" method="post">
   ソート：
-  <label>
+  <label class="option_order">
     Old
     <i class="fas fa-sort-down"></i>
     <input type="radio" name="order" value="asc" onChange="this.form.submit()" hidden></input>
   </label>
-  <label>
+  <label class="option_order">
     New
     <i class="fas fa-sort-up"></i>
     <input type="radio" name="order" value="desc" onChange="this.form.submit()" hidden></input>
+  </label>
+</form>
+
+<form class="form_sql_option form_sql_option_2" action="/sql_option" method="post">
+  表示数：
+  <label>
+    <select name="sort_size" onChange="this.form.submit()">
+      <option value="default" selected>選択してね。</option>
+      <option value="5">5件</option>
+      <option value="20">20件</option>
+      <option value="50">50件</option>
+      <option value="100">100件</option>
+      <option value="all">全て</option>
+    </select>
   </label>
 </form>
 
@@ -33,8 +47,31 @@
     <% if tweet['is_creater'] %>
 
       <div class="view my_view">
-        <p class="tweet_info my_tweet_info"><%= tweet['creater_name'] %>さん
-        &nbsp;<%= tweet['dateinfo-con'] %></p>
+        <div class="tweet_info my_tweet_info">
+          <p><%= tweet['creater_name'] %>さん
+          &nbsp;<%= tweet['dateinfo-con'] %></p>
+
+          <div class="tweet_status">
+            <% if tweet['loginuser_is_like'] %>
+              <form action="/likes" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <label>
+                  <i class="fas fa-heart tweet_liked"></i>
+                  <input type="submit" name="tweet_id" value="<%= tweet['id'] %>" hidden>
+                </label>
+              </form>
+            <% else %>
+              <form action="/likes" method="post">
+                <label>
+                  <i class="far fa-heart tweet_nolike"></i>
+                  <input type="submit" name="tweet_id" value="<%= tweet['id'] %>" hidden>
+                </label>
+              </form>
+            <% end %>
+            <span class="tweet_status_like"><%= tweet['likes_count'] %></span>
+          </div>
+
+        </div>
         <p class="msg-content"><%= tweet['msg'] %></p>
         <% if tweet['img_name'] != nil %>
           <div class="tweet_img">
@@ -53,8 +90,32 @@
     <% else %>
 
       <div class="view other_view">
-        <p class="tweet_info"><%= tweet['creater_name'] %>さん
+        <div class="tweet_info">
+          <p><%= tweet['creater_name'] %>さん
           &nbsp;<%= tweet['dateinfo-con'] %></p>
+
+          <div class="tweet_status">
+            <% if tweet['loginuser_is_like'] %>
+              <form action="/likes" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <label>
+                  <i class="fas fa-heart tweet_liked"></i>
+                  <input type="submit" name="tweet_id" value="<%= tweet['id'] %>" hidden>
+                </label>
+              </form>
+            <% else %>
+              <form action="/likes" method="post">
+                <label>
+                  <i class="far fa-heart tweet_nolike"></i>
+                  <input type="submit" name="tweet_id" value="<%= tweet['id'] %>" hidden>
+                </label>
+              </form>
+            <% end %>
+            <span class="tweet_status_like"><%= tweet['likes_count'] %></span>
+          </div>
+
+        </div>
+
         <p class="msg-content"><%= tweet['msg'] %></p>
         <% if tweet['img_name'] != nil %>
           <div class="tweet_img">
