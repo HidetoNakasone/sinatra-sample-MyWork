@@ -185,7 +185,7 @@ post '/save' do
     up_img_name = ((0..9).to_a + ("a".."z").to_a + ("A".."Z").to_a).sample(30).join
 
     file = params[:upimg][:tempfile]
-    File.open("./public/upimgs/" + up_img_name + ".jpg", 'w') do |f|
+    File.open("./public/upimgs/" + up_img_name + ".jpg", 'wb') do |f|
       f.write(file.read)
     end
   end
