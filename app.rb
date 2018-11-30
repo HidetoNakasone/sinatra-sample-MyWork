@@ -97,7 +97,7 @@ get '/' do
     # binding.pry
   end
 
-  @pagename = "簡易掲示板"
+  @pagename = "ちょい掲示板"
   @loginuser_name = session[:loginuser_name]
   erb :top
 end

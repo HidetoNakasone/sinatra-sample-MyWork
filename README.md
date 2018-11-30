@@ -3,6 +3,8 @@
 
 CREATE DATABASE hepdev;
 
+USE hepdev;
+
 CREATE TABLE users (
   id int(11) auto_increment,
   user_name varchar(256),
@@ -45,3 +47,7 @@ CREATE TABLE comments (
 ![参考画像_1](https://raw.githubusercontent.com/HidetoNakasone/sinatra-sample-MyWork/master/README_imgs/01.png)
 
 ![参考画像_2](https://raw.githubusercontent.com/HidetoNakasone/sinatra-sample-MyWork/master/README_imgs/02.png)
+
+![参考画像_3](https://raw.githubusercontent.com/HidetoNakasone/sinatra-sample-MyWork/master/README_imgs/03.png)
+
+![参考画像_4](https://raw.githubusercontent.com/HidetoNakasone/sinatra-sample-MyWork/master/README_imgs/04.png)
