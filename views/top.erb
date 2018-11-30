@@ -1,8 +1,8 @@
 
-<h1 id="title"><%= @user_name %> でログイン中</h1>
+<h1 id="title"><%= @loginuser_name %> でログイン中</h1>
 
 <form action="/save" method="post" enctype="multipart/form-data">
-  <input type="text" name="msg" placeholder="Comment" required>
+  <input type="text" name="msg" placeholder="New Tweet" required>
   <br>
   <input type="file" accept="image/*" name="upimg">
   <br>
@@ -49,7 +49,7 @@
       <div class="view my_view">
         <div class="tweet_info my_tweet_info">
           <p><%= tweet['creater_name'] %>さん
-          &nbsp;<%= tweet['dateinfo-con'] %></p>
+          &nbsp;<span class="my_time_string"><%= tweet['dateinfo-con'] %></span></p>
 
           <div class="tweet_status">
             <% if tweet['loginuser_is_like'] %>
@@ -84,15 +84,28 @@
           <input type="hidden" name="img_name" value="<%= tweet['img_name'] %>">
           <input type="submit" value="Delete">
         </form>
+
+        <div class="comments_views my_comments_views">
+          <% tweet['comments'].each do |comment| %>
+            <p><span class="my_comment_name_string"><%= comment['creater_name'] %>さん：</span>&ensp;<%= comment['comment'] %></p>
+          <% end %>
+        </div>
+
+        <form class="comment_form" action="/comment" method="post">
+          <input type="hidden" name="tweet_id" value="<%= tweet['id'] %>">
+          <input type="text" name="add_comment" placeholder="New Comment" onChange="this.form.submit()">
+        </form>
+
       </div>
       <div class="my_view_edge"></div>
+
 
     <% else %>
 
       <div class="view other_view">
         <div class="tweet_info">
           <p><%= tweet['creater_name'] %>さん
-          &nbsp;<%= tweet['dateinfo-con'] %></p>
+          &nbsp;<span class="other_time_string"><%= tweet['dateinfo-con'] %></span></p>
 
           <div class="tweet_status">
             <% if tweet['loginuser_is_like'] %>
@@ -122,6 +135,18 @@
             <img src="/upimgs/<%= tweet['img_name'] %>.jpg">
           </div>
         <% end %>
+
+        <div class="comments_views other_comments_views">
+          <% tweet['comments'].each do |comment| %>
+            <p><span class="other_comment_name_string"><%= comment['creater_name'] %>さん：</span>&ensp;<%= comment['comment'] %></p>
+          <% end %>
+        </div>
+
+        <form class="comment_form" action="/comment" method="post">
+          <input type="hidden" name="tweet_id" value="<%= tweet['id'] %>">
+          <input type="text" name="add_comment" placeholder="New Comment" onChange="this.form.submit()">
+        </form>
+
       </div>
       <div class="other_view_edge"></div>
 

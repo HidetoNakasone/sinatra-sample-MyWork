@@ -5,6 +5,8 @@ require "sinatra/reloader"
 require "mysql2"
 require 'mysql2-cs-bind'
 
+require "pry"
+
 enable :sessions
 
 # ====================
@@ -55,11 +57,13 @@ get '/' do
   @page_message = session[:page_message]
   session[:page_message] = nil
 
-  @res = client.xquery("SELECT * FROM tweets ORDER BY id #{session[:user_order]} #{session[:user_sort_option]};")
+  @res = client.xquery("SELECT * FROM tweets ORDER BY id #{session[:loginuser_order]} #{session[:loginuser_sort_option]};")
+
   if @res.size < 1
     @res_info = "No Data."
   else
     @res.each do |row|
+
       row['dateinfo-con'] = time_con(row['dateinfo'])
 
       # その投稿者がログインユーザーかどうかを記憶
@@ -80,11 +84,21 @@ get '/' do
         row['loginuser_is_like'] = false
       end
 
+      # その投稿に対するコメントを、新しい配列として記憶させている。
+      row['comments'] = []
+      res_comments = client.xquery("SELECT * FROM comments WHERE tweet_id = ?", row['id'])
+      res_comments.each do |row_comment|
+        row['comments'].push(
+          {"creater_name" => row_comment['creater_name'], "comment" => row_comment['comment']}
+        )
+      end
+
     end
+    # binding.pry
   end
 
   @pagename = "簡易掲示板"
-  @user_name = session[:user_name]
+  @loginuser_name = session[:loginuser_name]
   erb :top
 end
 
@@ -110,10 +124,10 @@ post '/login' do
   page_message = nil
   if res
     session[:loginuser_id] = res['id']
-    session[:user_name] = res['user_name']
+    session[:loginuser_name] = res['user_name']
     # 初期のorderは、asc設定。
-    session[:user_order] = "ASC"
-    session[:user_sort_option] = ""
+    session[:loginuser_order] = "ASC"
+    session[:loginuser_sort_option] = ""
 
     page_message = "<p style='padding: 0 10px;'>Success.<br>適正ユーザーです<br>「データベースへアクセス開始...」</p>"
   else
@@ -127,9 +141,9 @@ end
 
 get '/logout' do
   session[:loginuser_id] = nil
-  session[:user_name] = nil
-  session[:user_order] = nil
-  session[:user_sort_option] = nil
+  session[:loginuser_name] = nil
+  session[:loginuser_order] = nil
+  session[:loginuser_sort_option] = nil
   session[:page_message] = nil
   redirect '/'
 end
@@ -176,7 +190,7 @@ post '/save' do
     end
   end
 
-  client.xquery("INSERT INTO tweets VALUES (NULL, ?, ?, ?, ?, ?);", session[:loginuser_id].to_s, session[:user_name].to_s, DateTime.now, Rack::Utils.escape_html(params[:msg]), up_img_name)
+  client.xquery("INSERT INTO tweets VALUES (NULL, ?, ?, ?, ?, ?);", session[:loginuser_id].to_s, session[:loginuser_name].to_s, DateTime.now, Rack::Utils.escape_html(params[:msg]), up_img_name)
   session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>追加完了<br>「データが正常に処理されました」</p>"
 
   redirect '/'
@@ -191,6 +205,7 @@ delete '/tweet_delete' do
   end
   client.xquery("DELETE FROM tweets WHERE id = ?;", params[:tweet_id])
   client.xquery("DELETE FROM likes WHERE tweet_id = ?;", params[:tweet_id])
+  client.xquery("DELETE FROM comments WHERE tweet_id = ?;", params[:tweet_id])
   session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>削除完了<br>「正常に削除処理を実行しました」</p>"
 
   redirect '/'
@@ -201,19 +216,19 @@ end
 post '/sql_option' do
 
   if params[:order] == "asc"
-    session[:user_order] = "ASC"
+    session[:loginuser_order] = "ASC"
     temp = "を古い順"
   elsif params[:order] == "desc"
-    session[:user_order] = "DESC"
+    session[:loginuser_order] = "DESC"
     temp = "を新しい順"
   end
 
   if params[:sort_size] != nil && params[:sort_size] != "default"
     if params[:sort_size] == "all"
-      session[:user_sort_option] = ""
+      session[:loginuser_sort_option] = ""
       temp = "数を全て"
     else
-      session[:user_sort_option] = "LIMIT #{params[:sort_size]}"
+      session[:loginuser_sort_option] = "LIMIT #{params[:sort_size]}"
       temp = "数を#{params[:sort_size]}"
     end
   end
@@ -236,6 +251,15 @@ end
 delete '/likes' do
   client.xquery("DELETE FROM likes WHERE user_id = ? && tweet_id = ?;", session[:loginuser_id], params[:tweet_id])
   session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>いいね取り消し<br>「取り消し処理が正常に行われました」</p>"
+  redirect '/'
+end
+
+# ====================
+
+post '/comment' do
+  # binding.pry
+  client.xquery("INSERT INTO comments VALUES(NULL, ?, ?, ?, ?);", session[:loginuser_id], session[:loginuser_name], params[:tweet_id], Rack::Utils.escape_html(params[:add_comment]))
+  session[:page_message] = "<p style='padding: 0 10px;'>Success.<br>コメント追加<br>「追加処理が正常に行われました」</p>"
   redirect '/'
 end
 

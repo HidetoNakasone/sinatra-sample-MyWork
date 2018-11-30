@@ -301,6 +301,16 @@ input[type="submit"]:hover, input[type="submit"]:focus {
   color: rgb(69, 69, 69);
 }
 
+.my_time_string {
+  color: rgba(69, 69, 69, 0.7);
+  font-size: 20px;
+}
+
+.other_time_string {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 20px;
+}
+
 .tweet_status form {
   padding-left: 25%;
   float: left;
@@ -386,6 +396,60 @@ input[type="submit"]:hover, input[type="submit"]:focus {
   color: rgb(50, 50, 50);
   /* font-size: 24px; */
   letter-spacing: 0px;
+}
+
+.comments_views {
+  width: 90%;
+  margin-left: 3%;
+  margin-top: 20px;
+  padding: 2%;
+}
+
+.my_comments_views {
+  border-top: 2px solid rgba(69, 69, 69, 0.4);
+}
+
+.other_comments_views {
+  border-top: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.comments_views p {
+  font-size: 20px;
+  text-align: left;
+}
+
+.my_comment_name_string {
+  color: rgba(69, 69, 69, 0.85);
+  font-size: 18px;
+}
+
+.other_comment_name_string {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+}
+
+.comment_form {
+  margin-top: -2%;
+}
+
+.comment_form input {
+  width: 24%;
+  max-width: 300px;
+  height: 30px;
+  border: 0;
+  border-radius: 12px;
+  margin: 0;
+  padding-top: 0;
+  font-size: 20px;
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.comment_form input:hover {
+  cursor: pointer;
+  max-width: 240px;
+  border-radius: 20px;
+  color: rgb(69, 69, 69);
+  background-color: white;
 }
 
 #logo {

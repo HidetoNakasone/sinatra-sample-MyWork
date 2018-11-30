@@ -27,6 +27,18 @@ CREATE TABLE likes (
   primary key(id)
 );
 
+
+CREATE TABLE comments (
+  id int(11) auto_increment,
+  creater_id int(11),
+  creater_name varchar(256),
+  tweet_id int(11),
+  comment varchar(256),
+  primary key(id)
+);
+
+
+
 ※sqlへアクセスするユーザーとパスワードを、app.rbのclientクラスで指定してください。
 私の場合、rootユーザーのrootというパスワードにてアクセスしています。
 
